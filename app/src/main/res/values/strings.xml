@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Kotlin Final</string>
+
+    <string name="txt_welcome">Welcome to Bootleg Twitter!</string>
+    <string name="btn_login">Log In</string>
+    <string name="btn_signup">Sign Up</string>
+
+    <string name="txt_createAcct">Please create an account below.</string>
+    <string name="txt_login">Please enter your details.</string>
+    <string name="txt_placeholder">Placeholder</string>
+
+    <string name="txt_ageError">ERROR: You must be at least 13 years old to create an account.</string>
+    <string name="txt_passwordError">ERROR: Passwords do not match.</string>
+    <string name="txt_filloutError">ERROR: Not all fields have been filled out.</string>
+
+    <string name="txt_emailPrompt">Email</string>
+    <string name="txt_usernamePrompt">Username</string>
+    <string name="txt_passwordPrompt">Password</string>
+    <string name="txt_passwordRetypePrompt">Retype Password</string>
+    <string name="txt_dobPrompt">Date of birth:</string>
+    <string name="txt_genderPrompt">Gender</string>
+    <string name="txt_submit">Submit</string>
+</resources>
