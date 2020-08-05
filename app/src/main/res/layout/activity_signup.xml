@@ -41,6 +41,15 @@
             android:inputType="textPersonName" />
 
         <EditText
+            android:id="@+id/edit_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="username"
+            android:ems="10"
+            android:hint="@string/txt_emailPrompt"
+            android:inputType="textEmailAddress" />
+
+        <EditText
             android:id="@+id/edit_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -80,8 +89,7 @@
             android:id="@+id/btn_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/txt_submit"
-            android:onClick="submitOnClick" />
+            android:text="@string/txt_submit" />
 
     </LinearLayout>
 
