@@ -8,6 +8,5 @@ data class User (
     val uuid: String = "",
     val fbUserId: String,
     val profileName: String,
-    val birthDate: Date,
-    val gender: String
+    val birthDate: Date
 ): Serializable

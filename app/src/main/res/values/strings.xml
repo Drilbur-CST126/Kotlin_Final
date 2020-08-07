@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Kotlin Final</string>
+    <string name="app_name">Songbird</string>
 
-    <string name="txt_welcome">Welcome to Bootleg Twitter!</string>
+    <string name="txt_welcome">Welcome to Songbird!</string>
     <string name="btn_login">Log In</string>
     <string name="btn_signup">Sign Up</string>
 
@@ -20,4 +20,11 @@
     <string name="txt_dobPrompt">Date of birth:</string>
     <string name="txt_genderPrompt">Gender</string>
     <string name="txt_submit">Submit</string>
+
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_likes">Likes</string>
+
+    <string name="img_heart">Like</string>
 </resources>

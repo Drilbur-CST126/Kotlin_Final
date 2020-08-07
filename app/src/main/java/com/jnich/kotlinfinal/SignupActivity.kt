@@ -23,7 +23,6 @@ class SignupActivity: AppCompatActivity() {
     private var date: Date? = null
     private var username = ""
     private var password = "" // Note: While stored as a string, this is always hashed and salted
-    private var gender = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +64,6 @@ class SignupActivity: AppCompatActivity() {
 
         username = edit_username?.text?.toString() ?: ""
         email = edit_email?.text?.toString() ?: ""
-        gender = edit_gender?.text?.toString() ?: ""
 
         password = ""
         val passwordIn = edit_password?.text?.toString() ?: ""
@@ -73,7 +71,7 @@ class SignupActivity: AppCompatActivity() {
         val verified = passwordIn == passwordRetype
 
         // Give error if something is not filled out correctly
-        if (date == null || username.isBlank() || gender.isBlank() || passwordIn.isBlank() || email.isBlank()) {
+        if (date == null || username.isBlank() || passwordIn.isBlank() || email.isBlank()) {
             txt_error!!.text = getString(R.string.txt_filloutError)
             txt_error!!.visibility = View.VISIBLE
         } else if (verified) {
@@ -90,7 +88,6 @@ class SignupActivity: AppCompatActivity() {
                         childDb.child("username").setValue(username)
                         childDb.child("email").setValue(email)
                         childDb.child("dob").setValue(date)
-                        childDb.child("gender").setValue(gender)
 
                         Toast.makeText(this, "Account ${email} created!", Toast.LENGTH_SHORT)
                             .show()

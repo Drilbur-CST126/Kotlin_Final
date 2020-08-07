@@ -1,5 +1,6 @@
 package com.jnich.kotlinfinal
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -20,6 +21,9 @@ class LoginActivity : AppCompatActivity() {
                 mAuth.signInWithEmailAndPassword(email, password)
                     .addOnSuccessListener {
                         Log.d("LoginActivity","Successful login")
+
+                        val intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
                     }
                     .addOnFailureListener {
                         Log.d("LoginActivity","Unsuccessful login")
