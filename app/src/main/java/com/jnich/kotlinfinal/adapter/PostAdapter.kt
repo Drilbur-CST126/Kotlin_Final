@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jnich.kotlinfinal.R
 import com.jnich.kotlinfinal.model.Post
 
-class PostAdapter(private val context: Context, private val posts: List<Post>) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
+class PostAdapter(private val context: Context, private val posts: MutableList<Post>) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val authorName = view.findViewById<TextView>(R.id.txt_postAuthorName)
@@ -29,8 +29,19 @@ class PostAdapter(private val context: Context, private val posts: List<Post>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val post = posts[position]
-        holder.authorName.text = post.author.profileName
+        holder.authorName.text = post.author
         holder.content.text = post.content
         holder.likeCount.text = post.likes.toString()
+    }
+
+    fun addPost(post: Post) {
+        posts.add(post)
+        notifyItemInserted(posts.size)
+    }
+
+    fun clear() {
+        val size = posts.size
+        posts.clear()
+        notifyItemRangeRemoved(0, size)
     }
 }
