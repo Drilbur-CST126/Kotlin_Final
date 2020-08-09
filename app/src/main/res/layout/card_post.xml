@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -37,6 +38,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:contentDescription="@string/img_heart"
+            android:visibility="invisible"
             app:layout_constraintEnd_toStartOf="@+id/txt_postLikeCount"
             app:layout_constraintTop_toBottomOf="@+id/txt_postContent"
             app:srcCompat="@drawable/ic_heart" />
@@ -53,6 +55,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/img_heart" />
+
+        <ToggleButton
+            android:id="@+id/tgl_heart"
+            style="@style/Widget.Button.Toggle"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toStartOf="@+id/txt_postLikeCount"
+            app:layout_constraintTop_toBottomOf="@+id/txt_postContent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

@@ -8,7 +8,7 @@ data class User (
     val authUid: String,
     val profileName: String,
     val birthDate: Date,
-    val likes: MutableList<String>? = null
+    val likes: MutableSet<String>? = null
 ): Serializable {
     companion object {
         val ERROR_USER = User("", "[Unknown User]", Date())
@@ -20,7 +20,7 @@ data class User (
                 birthDate = snapshot.child("dob").value as? Date ?: ERROR_USER.birthDate,
                 likes = snapshot.child("likes").children.map {
                     it.key!!
-                }.toMutableList()
+                }.toMutableSet()
             )
         }
     }

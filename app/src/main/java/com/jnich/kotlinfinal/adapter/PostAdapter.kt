@@ -4,8 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.FirebaseDatabase
 import com.jnich.kotlinfinal.R
@@ -19,7 +18,7 @@ class PostAdapter(private val context: Context, private val posts: MutableList<P
         val authorName = view.findViewById<TextView>(R.id.txt_postAuthorName)!!
         val content = view.findViewById<TextView>(R.id.txt_postContent)!!
         val likeCount = view.findViewById<TextView>(R.id.txt_postLikeCount)!!
-        val heart = view.findViewById<ImageView>(R.id.img_heart)!!
+        val heart = view.findViewById<ToggleButton>(R.id.tgl_heart)!!
         var id = ""
 
         val liked: Boolean
@@ -43,8 +42,9 @@ class PostAdapter(private val context: Context, private val posts: MutableList<P
         holder.likeCount.text = post.likes.toString()
         holder.id = post.uuid
 
-        holder.heart.setOnClickListener {
-            if (holder.liked) {
+        holder.heart.isChecked = holder.liked
+        holder.heart.setOnCheckedChangeListener { _, liking ->
+            if (!liking) {
                 Controller.user?.likes?.remove(holder.id)
                 post.likes -= 1
                 db
@@ -53,7 +53,7 @@ class PostAdapter(private val context: Context, private val posts: MutableList<P
                     .child("likes")
                     .child(holder.id)
                     .removeValue()
-                holder.heart.setImageDrawable(context.getDrawable(R.drawable.ic_heart))
+                //holder.heart.setImageDrawable(context.getDrawable(R.drawable.ic_heart))
             } else {
                 Controller.user?.likes?.add(holder.id)
                 post.likes += 1
@@ -62,14 +62,14 @@ class PostAdapter(private val context: Context, private val posts: MutableList<P
                     .child(Controller.user!!.authUid)
                     .child("likes")
                     .child(holder.id).setValue(true) // Dummy value
-                holder.heart.setImageDrawable(context.getDrawable(R.drawable.ic_filled_heart))
+                //holder.heart.setImageDrawable(context.getDrawable(R.drawable.ic_filled_heart))
             }
             db
                 .child("Posts")
                 .child(holder.id)
                 .child("likes")
                 .setValue(post.likes)
-            holder.likeCount.text = post.likes.toString()
+            //holder.likeCount.text = post.likes.toString()
         }
     }
 
