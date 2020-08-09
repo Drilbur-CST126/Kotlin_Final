@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_likes"
-        android:name="com.jnich.kotlinfinal.ui.notifications.NotificationsFragment"
+        android:name="com.jnich.kotlinfinal.ui.likes.LikesFragment"
         android:label="@string/title_likes"
         tools:layout="@layout/fragment_notifications" />
 </navigation>

@@ -5,10 +5,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.jnich.kotlinfinal.controller.Controller
+import com.jnich.kotlinfinal.model.User
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
     private var mAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val users = FirebaseDatabase.getInstance().reference.child("Users")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +28,18 @@ class LoginActivity : AppCompatActivity() {
                 mAuth.signInWithEmailAndPassword(email, password)
                     .addOnSuccessListener {
                         Log.d("LoginActivity","Successful login")
+
+                        users.child(it.user!!.uid).addValueEventListener(object : ValueEventListener {
+                            override fun onCancelled(error: DatabaseError) {
+                                Controller.user = User.ERROR_USER
+                            }
+
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                Controller.user = User.fromSnapshot(snapshot)
+                                Log.d("LoginActivity","User set successfully! ${Controller.user.toString()}")
+                            }
+
+                        })
 
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)

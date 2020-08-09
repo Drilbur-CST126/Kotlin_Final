@@ -7,7 +7,7 @@ import java.io.Serializable
 import java.security.SecureRandom
 import java.util.*
 
-class Controller: IController {
+object Controller: IController {
     override var user: User? = null
     //var db: DatabaseReference = FirebaseDatabase.getInstance().reference
 

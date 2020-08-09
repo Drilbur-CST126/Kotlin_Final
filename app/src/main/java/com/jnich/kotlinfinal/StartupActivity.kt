@@ -12,21 +12,17 @@ import com.jnich.kotlinfinal.controller.IController
 import kotlinx.android.synthetic.main.activity_startup.*
 
 class StartupActivity : AppCompatActivity() {
-    private val controller: IController = Controller()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_startup)
 
         btn_login.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
-            intent.putExtra("CONTROLLER", controller)
             startActivity(intent)
         }
 
         btn_signup.setOnClickListener {
             val intent = Intent(this, SignupActivity::class.java)
-            intent.putExtra("CONTROLLER", controller)
             startActivity(intent)
         }
     }

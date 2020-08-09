@@ -30,25 +30,11 @@ class HomeFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-//        val user1 = User("", "", "Jordan1", Date())
-//        val user2 = User("", "", "Jordan2", Date())
-//        val list = arrayListOf(
-//            Post(user1, "Content", null, 420),
-//            Post(user2, "Jontent", null, 2)
-//        )
-//
-//        list.forEach {
-//            val postKey = posts.push().key!!
-//            it.uuid = postKey
-//            posts.child(postKey).setValue(it)
-//            posts.child(postKey).child("author").setValue(it.author.userUuid)
-//        }
-
         val list = ArrayList<Post>()
         val adapter = PostAdapter(requireContext(), list)
         db.child("Posts").addValueEventListener(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
-                adapter.addPost(Post(Post.SONGBIRD_AUTHOR, "There has been an error. We apologise for the inconvenience.", likes = 0))
+                adapter.addPost(Post(author = Post.SONGBIRD_AUTHOR, authorUid = "", content = "There has been an error. We apologise for the inconvenience.", likes = 0))
             }
 
             override fun onDataChange(snapshot: DataSnapshot) {

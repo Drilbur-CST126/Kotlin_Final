@@ -1,6 +1,7 @@
 package com.jnich.kotlinfinal
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,12 +11,13 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.jnich.kotlinfinal.controller.Controller
 import com.jnich.kotlinfinal.controller.IController
+import com.jnich.kotlinfinal.model.User
 import kotlinx.android.synthetic.main.activity_signup.*
 import java.util.*
 
 class SignupActivity: AppCompatActivity() {
-    private lateinit var controller: IController
     private val mAuth = FirebaseAuth.getInstance()
     private lateinit var dbRef: DatabaseReference
 
@@ -28,7 +30,6 @@ class SignupActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
 
-        controller = intent.extras!!["CONTROLLER"] as IController
         dbRef = FirebaseDatabase.getInstance().reference.child("Users")
 
         edit_dob!!.showSoftInputOnFocus = false
@@ -75,7 +76,7 @@ class SignupActivity: AppCompatActivity() {
             txt_error!!.text = getString(R.string.txt_filloutError)
             txt_error!!.visibility = View.VISIBLE
         } else if (verified) {
-            if (controller.verifyAge(date!!)) {
+            if (Controller.verifyAge(date!!)) {
                 password = passwordIn
 
                 mAuth.createUserWithEmailAndPassword(email, password)
@@ -88,9 +89,19 @@ class SignupActivity: AppCompatActivity() {
                         childDb.child("username").setValue(username)
                         childDb.child("email").setValue(email)
                         childDb.child("dob").setValue(date)
+                        childDb.child("authUid").setValue(userId)
 
-                        Toast.makeText(this, "Account ${email} created!", Toast.LENGTH_SHORT)
+                        Controller.user = User(
+                            authUid = userId,
+                            profileName = username,
+                            birthDate = date ?: User.ERROR_USER.birthDate
+                        )
+
+                        Toast.makeText(this, "Account $username created!", Toast.LENGTH_SHORT)
                             .show()
+
+                        val intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
                     }
                     .addOnFailureListener {
                         Log.d("SignupActivity","Unsuccessful account creation")
