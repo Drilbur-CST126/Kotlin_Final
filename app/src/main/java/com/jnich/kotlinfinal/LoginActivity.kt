@@ -25,6 +25,7 @@ class LoginActivity : AppCompatActivity() {
             val email = edit_loginEmail.text?.toString() ?: ""
             val password = edit_loginPassword.text?.toString() ?: ""
             if (!(email.isBlank() || password.isBlank())) {
+                val intent = Intent(this, MainActivity::class.java)
                 mAuth.signInWithEmailAndPassword(email, password)
                     .addOnSuccessListener {
                         Log.d("LoginActivity","Successful login")
@@ -32,17 +33,16 @@ class LoginActivity : AppCompatActivity() {
                         users.child(it.user!!.uid).addValueEventListener(object : ValueEventListener {
                             override fun onCancelled(error: DatabaseError) {
                                 Controller.user = User.ERROR_USER
+                                startActivity(intent)
                             }
 
                             override fun onDataChange(snapshot: DataSnapshot) {
                                 Controller.user = User.fromSnapshot(snapshot)
                                 Log.d("LoginActivity","User set successfully! ${Controller.user.toString()}")
+                                startActivity(intent)
                             }
 
                         })
-
-                        val intent = Intent(this, MainActivity::class.java)
-                        startActivity(intent)
                     }
                     .addOnFailureListener {
                         Log.d("LoginActivity","Unsuccessful login")

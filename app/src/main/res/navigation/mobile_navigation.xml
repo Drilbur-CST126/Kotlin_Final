@@ -13,9 +13,14 @@
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.jnich.kotlinfinal.ui.dashboard.DashboardFragment"
+        android:name="com.jnich.kotlinfinal.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_profile" >
+        <argument
+            android:name="username"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_likes"
