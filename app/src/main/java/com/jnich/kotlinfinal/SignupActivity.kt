@@ -1,27 +1,35 @@
 package com.jnich.kotlinfinal
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.DatePicker
-import com.jnich.kotlinfinal.controller.IController
+import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.jnich.kotlinfinal.controller.Controller
+import com.jnich.kotlinfinal.model.User
 import kotlinx.android.synthetic.main.activity_signup.*
 import java.util.*
 
 class SignupActivity: AppCompatActivity() {
-    private lateinit var controller: IController
+    private val mAuth = FirebaseAuth.getInstance()
+    private lateinit var dbRef: DatabaseReference
 
+    private var email = ""
     private var date: Date? = null
     private var username = ""
     private var password = "" // Note: While stored as a string, this is always hashed and salted
-    private var gender = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_startup)
+        setContentView(R.layout.activity_signup)
 
-        controller = intent.extras!!["CONTROLLER"] as IController
+        dbRef = FirebaseDatabase.getInstance().reference.child("Users")
 
         edit_dob!!.showSoftInputOnFocus = false
         edit_dob!!.onFocusChangeListener = View.OnFocusChangeListener()
@@ -46,26 +54,59 @@ class SignupActivity: AppCompatActivity() {
                 dpd.show()
             }
         }
+
+        btn_submit.setOnClickListener(::submitOnClick)
     }
 
-    fun submitOnClick(_view: View) {
+    private fun submitOnClick(_view: View) {
+        Log.d("SignupActivity","Submit button clicked")
         txt_error!!.visibility = View.GONE
 
-        username = edit_username!!.text!!.toString()
-        gender = edit_gender!!.text!!.toString()
+        username = edit_username?.text?.toString() ?: ""
+        email = edit_email?.text?.toString() ?: ""
 
         password = ""
-        val passwordIn = edit_password!!.text!!.toString()
-        val passwordRetype = edit_passwordRetype!!.text!!.toString()
+        val passwordIn = edit_password?.text?.toString() ?: ""
+        val passwordRetype = edit_passwordRetype?.text?.toString() ?: ""
         val verified = passwordIn == passwordRetype
 
         // Give error if something is not filled out correctly
-        if (date == null || username.isEmpty() || gender.isEmpty() || passwordIn.isEmpty()) {
+        if (date == null || username.isBlank() || passwordIn.isBlank() || email.isBlank()) {
             txt_error!!.text = getString(R.string.txt_filloutError)
             txt_error!!.visibility = View.VISIBLE
         } else if (verified) {
-            if (controller.verifyAge(date!!)) {
+            if (Controller.verifyAge(date!!)) {
                 password = passwordIn
+
+                mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnSuccessListener {
+                        Log.d("SignupActivity","Successful account creation: ${it.user!!.uid}")
+
+                        val userId = mAuth.currentUser!!.uid
+
+                        val childDb = dbRef.child(userId)
+                        childDb.child("username").setValue(username)
+                        childDb.child("email").setValue(email)
+                        childDb.child("dob").setValue(date)
+                        childDb.child("authUid").setValue(userId)
+
+                        Controller.user = User(
+                            authUid = userId,
+                            profileName = username,
+                            birthDate = date ?: User.ERROR_USER.birthDate
+                        )
+
+                        Toast.makeText(this, "Account $username created!", Toast.LENGTH_SHORT)
+                            .show()
+
+                        val intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
+                    }
+                    .addOnFailureListener {
+                        Log.d("SignupActivity","Unsuccessful account creation")
+                        Toast.makeText(this, "ERROR: ${it.message}", Toast.LENGTH_LONG)
+                            .show()
+                    }
             } else {
                 txt_error!!.text = getString(R.string.txt_ageError)
                 txt_error!!.visibility = View.VISIBLE
