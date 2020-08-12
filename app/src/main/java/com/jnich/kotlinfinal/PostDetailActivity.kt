@@ -1,5 +1,6 @@
 package com.jnich.kotlinfinal
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -61,5 +62,12 @@ class PostDetailActivity : AppCompatActivity() {
         recycler.addItemDecoration(DividerItemDecoration(recycler.context, LinearLayoutManager.VERTICAL))
         recycler.adapter = adapter
         layout_postDetail.addView(recycler)
+
+        holder.reply.setOnClickListener {
+            val intent = Intent(this, CreatePostActivity::class.java)
+            intent.putExtra("replyName", post.author)
+            intent.putExtra("replyPost", post.uuid)
+            startActivity(intent)
+        }
     }
 }
