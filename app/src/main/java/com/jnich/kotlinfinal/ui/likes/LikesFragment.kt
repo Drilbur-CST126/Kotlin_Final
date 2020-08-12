@@ -35,7 +35,8 @@ class LikesFragment : Fragment() {
 
         val list = ArrayList<Post>()
         val adapter = PostAdapter(requireContext(), list)
-        db.child("Posts").addValueEventListener(object : ValueEventListener {
+        val posts = db.child("Posts")
+        posts.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
                 adapter.addPost(Post(author = Post.SONGBIRD_AUTHOR, authorUid = "", content = "There has been an error. We apologise for the inconvenience.", likes = 0))
             }
@@ -45,6 +46,7 @@ class LikesFragment : Fragment() {
                 Controller.user?.likes?.forEach {
                     adapter.addPost(Post.fromSnapshot(snapshot.child(it)))
                 }
+                //posts.removeEventListener(this)
             }
         })
 

@@ -26,5 +26,9 @@
     <string name="title_profile">Profile</string>
     <string name="title_likes">Likes</string>
 
+    <string name="txt_postPrompt">Write your post here</string>
+    <string name="btn_post">Post</string>
+    <string name="toast_noContentError">ERROR: No content to post!</string>
+
     <string name="img_heart">Like</string>
 </resources>

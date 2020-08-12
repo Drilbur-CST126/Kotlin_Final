@@ -43,8 +43,8 @@ class PostAdapter(private val context: Context, private val posts: MutableList<P
         holder.id = post.uuid
 
         holder.heart.isChecked = holder.liked
-        holder.heart.setOnCheckedChangeListener { _, liking ->
-            if (!liking) {
+        holder.heart.setOnClickListener {
+            if (holder.liked) {
                 Controller.user?.likes?.remove(holder.id)
                 post.likes -= 1
                 db
@@ -69,7 +69,7 @@ class PostAdapter(private val context: Context, private val posts: MutableList<P
                 .child(holder.id)
                 .child("likes")
                 .setValue(post.likes)
-            //holder.likeCount.text = post.likes.toString()
+            holder.likeCount.text = post.likes.toString()
         }
     }
 
