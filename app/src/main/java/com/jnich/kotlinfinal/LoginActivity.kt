@@ -39,6 +39,11 @@ class LoginActivity : AppCompatActivity() {
 
                             override fun onDataChange(snapshot: DataSnapshot) {
                                 Controller.user = User.fromSnapshot(snapshot)
+                                Controller.following = ArrayList()
+                                snapshot.child("following").children.forEach { user ->
+                                    Controller.following?.add(0, user.key!!)
+                                }
+
                                 Log.d("LoginActivity","User set successfully! ${Controller.user.toString()}")
                                 startActivity(intent)
                                 user.removeEventListener(this)

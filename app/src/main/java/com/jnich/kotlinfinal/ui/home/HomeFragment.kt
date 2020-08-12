@@ -13,6 +13,7 @@ import com.google.firebase.database.*
 import com.jnich.kotlinfinal.CreatePostActivity
 import com.jnich.kotlinfinal.R
 import com.jnich.kotlinfinal.adapter.PostAdapter
+import com.jnich.kotlinfinal.controller.Controller
 import com.jnich.kotlinfinal.model.Post
 import com.jnich.kotlinfinal.model.User
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -44,8 +45,10 @@ class HomeFragment : Fragment() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 var index = 0
                 snapshot.children.forEach {
-                    adapter.setPost(Post.fromSnapshot(it), index)
-                    index += 1
+                    if (Controller.following == null || Controller.following?.size == 0 || Controller.following?.contains(it.child("author").value) != false) {
+                        adapter.setPost(Post.fromSnapshot(it), index)
+                        index += 1
+                    }
                 }
             }
         })
