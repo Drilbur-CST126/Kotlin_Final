@@ -19,6 +19,8 @@ import com.jnich.kotlinfinal.controller.Controller
 import com.jnich.kotlinfinal.model.Post
 import com.jnich.kotlinfinal.model.User
 import kotlinx.android.synthetic.main.fragment_profile.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_USERNAME = "username"
@@ -49,9 +51,11 @@ class ProfileFragment : Fragment() {
             user = Controller.user!!
             initProfile()
         } else {
-            db.child("Users").addValueEventListener(object : ValueEventListener {
+            val users = db.child("Users")
+            users.addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
                     user = User.ERROR_USER
+                    users.removeEventListener(this)
                     initProfile()
                 }
 
@@ -65,7 +69,7 @@ class ProfileFragment : Fragment() {
                     } else {
                         User.fromSnapshot(userChild)
                     }
-
+                    users.removeEventListener(this)
                     initProfile()
                 }
 
@@ -75,7 +79,12 @@ class ProfileFragment : Fragment() {
 
     private fun initProfile() {
         txt_username.text = user.profileName
-        txt_dob.text = user.birthDate.toString()
+        val dob = Calendar.getInstance()
+        dob.time = user.birthDate
+        txt_dob.text = context?.getString(R.string.txt_dobFormat,
+            dob.get(Calendar.MONTH),
+            dob.get(Calendar.DAY_OF_MONTH),
+            dob.get(Calendar.YEAR))
 
         val adapter = PostAdapter(requireContext(), ArrayList())
         db.child("Posts").addValueEventListener(object : ValueEventListener {

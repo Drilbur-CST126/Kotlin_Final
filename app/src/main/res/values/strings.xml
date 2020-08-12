@@ -8,6 +8,7 @@
     <string name="txt_createAcct">Please create an account below.</string>
     <string name="txt_login">Please enter your details.</string>
     <string name="txt_placeholder">Loading…</string>
+    <string name="txt_dobFormat">%1$d/%2$d/%3$d</string>
 
     <string name="txt_ageError">ERROR: You must be at least 13 years old to create an account.</string>
     <string name="txt_passwordError">ERROR: Passwords do not match.</string>
