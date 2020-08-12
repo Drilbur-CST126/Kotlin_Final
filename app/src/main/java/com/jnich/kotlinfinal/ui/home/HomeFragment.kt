@@ -49,7 +49,10 @@ class HomeFragment : Fragment() {
                 }
                 var index = 0
                 snapshot.children.forEach {
-                    if (Controller.following == null || Controller.following?.size == 0 || Controller.following?.contains(it.child("author").value) != false) {
+                    if ((Controller.following == null
+                        || Controller.following?.size == 0
+                        || Controller.following?.contains(it.child("author").value) != false)
+                        && it.child("replyTo").value == null) {
                         adapter.setPost(Post.fromSnapshot(it), index)
                         index += 1
                     }
