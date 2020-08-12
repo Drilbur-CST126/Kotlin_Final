@@ -1,5 +1,15 @@
 package com.jnich.kotlinfinal.controller
 
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
+import androidx.core.content.contentValuesOf
+import com.jnich.kotlinfinal.R
 import com.jnich.kotlinfinal.model.User
 import java.util.*
 

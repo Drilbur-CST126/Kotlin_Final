@@ -1,11 +1,21 @@
 package com.jnich.kotlinfinal.ui.profile
 
+import android.Manifest
+import android.app.Activity.RESULT_OK
+import android.app.AlertDialog
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.pm.PackageManager.PERMISSION_DENIED
+import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +29,7 @@ import com.jnich.kotlinfinal.controller.Controller
 import com.jnich.kotlinfinal.model.Post
 import com.jnich.kotlinfinal.model.User
 import kotlinx.android.synthetic.main.fragment_profile.*
+import java.security.Permission
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -137,9 +148,55 @@ class ProfileFragment : Fragment() {
             if (Controller.following?.contains(user.profileName) == true) {
                 btn_follow.text = context?.getText(R.string.btn_unfollow)
             }
-            btn_follow.isEnabled = (user.profileName != Controller.user?.profileName)
+            btn_follow.isEnabled = (user.authUid != Controller.user?.authUid)
         } else {
             btn_follow.isEnabled = false
+        }
+
+        if (user.authUid != Controller.user?.authUid) {
+            img_modifyIcon.visibility = View.GONE
+        } else {
+            img_icon.setOnClickListener {
+                val context = requireContext()
+                when(ContextCompat.checkSelfPermission(context,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    PERMISSION_GRANTED -> {
+                        val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                        startActivityForResult(intent, READ_FROM_GALLERY)
+                    }
+                    else -> {
+                        requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), READ_FROM_GALLERY)
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            READ_FROM_GALLERY -> {
+                if (resultCode == RESULT_OK) {
+                    val uri = data?.data!!
+                    val imageStream = requireContext().contentResolver.openInputStream(uri)
+                    val image = BitmapFactory.decodeStream(imageStream)
+                    img_icon.setImageBitmap(image)
+                }
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            READ_FROM_GALLERY -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PERMISSION_GRANTED) {
+                    val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                    startActivityForResult(intent, READ_FROM_GALLERY)
+                }
+            }
         }
     }
 
@@ -152,6 +209,8 @@ class ProfileFragment : Fragment() {
     }
 
     companion object {
+        const val READ_FROM_GALLERY = 1
+
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.

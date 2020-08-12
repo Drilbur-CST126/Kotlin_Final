@@ -36,5 +36,9 @@
     <string name="btn_reply">Reply</string>
     <string name="txt_replies">Replies:</string>
 
+    <string name="alert_filePermissions">In order to continue with this action, we need the ability to read your files. Continue?</string>
+    <string name="alert_yes">Yes</string>
+    <string name="alert_no">No</string>
+
     <string name="img_heart">Like</string>
 </resources>
