@@ -30,7 +30,8 @@ class LoginActivity : AppCompatActivity() {
                     .addOnSuccessListener {
                         Log.d("LoginActivity","Successful login")
 
-                        users.child(it.user!!.uid).addValueEventListener(object : ValueEventListener {
+                        val user = users.child(it.user!!.uid)
+                        user.addValueEventListener(object : ValueEventListener {
                             override fun onCancelled(error: DatabaseError) {
                                 Controller.user = User.ERROR_USER
                                 startActivity(intent)
@@ -40,6 +41,7 @@ class LoginActivity : AppCompatActivity() {
                                 Controller.user = User.fromSnapshot(snapshot)
                                 Log.d("LoginActivity","User set successfully! ${Controller.user.toString()}")
                                 startActivity(intent)
+                                user.removeEventListener(this)
                             }
 
                         })
