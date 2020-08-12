@@ -6,6 +6,7 @@ import java.util.*
 object Controller {
     var user: User? = null
     var following: MutableList<String>? = null
+    var followingChanged = false
     //var db: DatabaseReference = FirebaseDatabase.getInstance().reference
 
     private fun getAge(date: Date) : Int {

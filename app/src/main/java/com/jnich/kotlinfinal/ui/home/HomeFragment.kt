@@ -43,6 +43,10 @@ class HomeFragment : Fragment() {
             }
 
             override fun onDataChange(snapshot: DataSnapshot) {
+                if (Controller.followingChanged) {
+                    adapter.clear()
+                    Controller.followingChanged = false
+                }
                 var index = 0
                 snapshot.children.forEach {
                     if (Controller.following == null || Controller.following?.size == 0 || Controller.following?.contains(it.child("author").value) != false) {

@@ -107,34 +107,39 @@ class ProfileFragment : Fragment() {
         recycler_profile.addItemDecoration(DividerItemDecoration(recycler_profile.context, LinearLayoutManager.VERTICAL))
         recycler_profile.adapter = adapter
 
-        btn_follow.setOnClickListener {
-            if (Controller.following?.contains(user.profileName) != true) {
-                db
-                    .child("Users")
-                    .child(Controller.user!!.authUid)
-                    .child("following")
-                    .child(user.profileName)
-                    .setValue(true)
-                if (Controller.following == null) {
-                    Controller.following = ArrayList()
+        if (!user.authUid.isBlank()) {
+            btn_follow.setOnClickListener {
+                if (Controller.following?.contains(user.profileName) != true) {
+                    db
+                        .child("Users")
+                        .child(Controller.user!!.authUid)
+                        .child("following")
+                        .child(user.profileName)
+                        .setValue(true)
+                    if (Controller.following == null) {
+                        Controller.following = ArrayList()
+                    }
+                    Controller.following!!.add(user.profileName)
+                    btn_follow.text = context?.getText(R.string.btn_unfollow)
+                } else {
+                    db
+                        .child("Users")
+                        .child(Controller.user!!.authUid)
+                        .child("following")
+                        .child(user.profileName)
+                        .removeValue()
+                    Controller.following!!.remove(user.profileName)
+                    btn_follow.text = context?.getText(R.string.btn_follow)
                 }
-                Controller.following!!.add(user.profileName)
-                btn_follow.text = context?.getText(R.string.btn_unfollow)
-            } else {
-                db
-                    .child("Users")
-                    .child(Controller.user!!.authUid)
-                    .child("following")
-                    .child(user.profileName)
-                    .removeValue()
-                Controller.following!!.remove(user.profileName)
-                btn_follow.text = context?.getText(R.string.btn_follow)
+                Controller.followingChanged = true
             }
+            if (Controller.following?.contains(user.profileName) == true) {
+                btn_follow.text = context?.getText(R.string.btn_unfollow)
+            }
+            btn_follow.isEnabled = (user.profileName != Controller.user?.profileName)
+        } else {
+            btn_follow.isEnabled = false
         }
-        if (Controller.following?.contains(user.profileName) == true) {
-            btn_follow.text = context?.getText(R.string.btn_unfollow)
-        }
-        btn_follow.isEnabled = (user.profileName != Controller.user?.profileName)
     }
 
     override fun onCreateView(
