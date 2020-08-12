@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_post"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -31,39 +31,37 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_postAuthorName" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/img_heart"
-            android:layout_width="35dp"
-            android:layout_height="32dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:contentDescription="@string/img_heart"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toStartOf="@+id/txt_postLikeCount"
-            app:layout_constraintTop_toBottomOf="@+id/txt_postContent"
-            app:srcCompat="@drawable/ic_heart" />
-
         <TextView
             android:id="@+id/txt_postLikeCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
             android:text="@string/txt_placeholder"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@color/colorPrimary"
-            app:layout_constraintBottom_toBottomOf="@+id/img_heart"
+            app:layout_constraintBottom_toBottomOf="@+id/tgl_heart"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.801"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/img_heart" />
+            app:layout_constraintTop_toTopOf="@+id/tgl_heart" />
 
         <ToggleButton
             android:id="@+id/tgl_heart"
             style="@style/Widget.Button.Toggle"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_reply"
             app:layout_constraintEnd_toStartOf="@+id/txt_postLikeCount"
+            app:layout_constraintTop_toTopOf="@+id/btn_reply" />
+
+        <Button
+            android:id="@+id/btn_reply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/btn_reply"
+            app:layout_constraintEnd_toStartOf="@+id/tgl_heart"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_postContent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

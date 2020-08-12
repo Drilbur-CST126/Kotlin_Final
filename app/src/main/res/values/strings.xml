@@ -33,6 +33,8 @@
     <string name="txt_postPrompt">Write your post here</string>
     <string name="btn_post">Post</string>
     <string name="toast_noContentError">ERROR: No content to post!</string>
+    <string name="btn_reply">Reply</string>
+    <string name="txt_replies">Replies:</string>
 
     <string name="img_heart">Like</string>
 </resources>

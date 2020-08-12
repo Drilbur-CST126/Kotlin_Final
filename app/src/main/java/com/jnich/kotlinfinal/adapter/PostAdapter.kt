@@ -6,8 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.jnich.kotlinfinal.PostDetailActivity
 import com.jnich.kotlinfinal.R
 import com.jnich.kotlinfinal.controller.Controller
 import com.jnich.kotlinfinal.model.Post
@@ -21,10 +24,61 @@ class PostAdapter(private val context: Context, private val posts: MutableList<P
         val content = view.findViewById<TextView>(R.id.txt_postContent)!!
         val likeCount = view.findViewById<TextView>(R.id.txt_postLikeCount)!!
         val heart = view.findViewById<ToggleButton>(R.id.tgl_heart)!!
+        val layout = view.findViewById<ConstraintLayout>(R.id.layout_post)!!
+        val reply = view.findViewById<Button>(R.id.btn_reply)!!
         var id = ""
 
         val liked: Boolean
             get() = Controller.user?.likes?.contains(id) ?: false
+        
+        fun bind(context: Context, post: Post, db: DatabaseReference, focus: Boolean = false) {
+            authorName.text = post.author
+            content.text = post.content
+            likeCount.text = post.likes.toString()
+            id = post.uuid
+
+            if (focus) {
+                authorName.setTextAppearance(R.style.TextAppearance_AppCompat_Large)
+            } else {
+                reply.visibility = View.GONE
+            }
+
+            heart.isChecked = liked
+            heart.setOnClickListener {
+                if (liked) {
+                    Controller.user?.likes?.remove(id)
+                    post.likes -= 1
+                    db
+                        .child("Users")
+                        .child(Controller.user!!.authUid)
+                        .child("likes")
+                        .child(id)
+                        .removeValue()
+                    //heart.setImageDrawable(context.getDrawable(R.drawable.ic_heart))
+                } else {
+                    Controller.user?.likes?.add(id)
+                    post.likes += 1
+                    db
+                        .child("Users")
+                        .child(Controller.user!!.authUid)
+                        .child("likes")
+                        .child(id).setValue(true) // Dummy value
+                    //heart.setImageDrawable(context.getDrawable(R.drawable.ic_filled_heart))
+                }
+                db
+                    .child("Posts")
+                    .child(id)
+                    .child("likes")
+                    .setValue(post.likes)
+                likeCount.text = post.likes.toString()
+            }
+
+            authorName.setOnClickListener {
+                val intent = Intent(context, ProfileActivity::class.java)
+                intent.putExtra("username", post.author)
+                context.startActivity(intent)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -39,44 +93,11 @@ class PostAdapter(private val context: Context, private val posts: MutableList<P
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val post = posts[position]
-        holder.authorName.text = post.author
-        holder.content.text = post.content
-        holder.likeCount.text = post.likes.toString()
-        holder.id = post.uuid
+        holder.bind(context, post, db)
 
-        holder.heart.isChecked = holder.liked
-        holder.heart.setOnClickListener {
-            if (holder.liked) {
-                Controller.user?.likes?.remove(holder.id)
-                post.likes -= 1
-                db
-                    .child("Users")
-                    .child(Controller.user!!.authUid)
-                    .child("likes")
-                    .child(holder.id)
-                    .removeValue()
-                //holder.heart.setImageDrawable(context.getDrawable(R.drawable.ic_heart))
-            } else {
-                Controller.user?.likes?.add(holder.id)
-                post.likes += 1
-                db
-                    .child("Users")
-                    .child(Controller.user!!.authUid)
-                    .child("likes")
-                    .child(holder.id).setValue(true) // Dummy value
-                //holder.heart.setImageDrawable(context.getDrawable(R.drawable.ic_filled_heart))
-            }
-            db
-                .child("Posts")
-                .child(holder.id)
-                .child("likes")
-                .setValue(post.likes)
-            holder.likeCount.text = post.likes.toString()
-        }
-
-        holder.authorName.setOnClickListener {
-            val intent = Intent(context, ProfileActivity::class.java)
-            intent.putExtra("username", post.author)
+        holder.layout.setOnClickListener {
+            val intent = Intent(context, PostDetailActivity::class.java)
+            intent.putExtra("post", post)
             context.startActivity(intent)
         }
     }

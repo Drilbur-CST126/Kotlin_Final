@@ -38,6 +38,7 @@ class CreatePostActivity : AppCompatActivity() {
                     post.child("authorUid").setValue(Controller.user?.authUid)
                     post.child("likes").setValue(0)
                     post.child("uuid").setValue(key)
+                    post.child("replyTo").setValue(replyPost)
 
                     finish()
                 }
