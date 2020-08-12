@@ -73,6 +73,15 @@ class PostAdapter(private val context: Context, private val posts: MutableList<P
         }
     }
 
+    fun setPost(post: Post, index: Int) {
+        if (index >= posts.size) {
+            addPost(post)
+        } else if (post != posts[index]) {
+            posts[index] = post
+            notifyItemChanged(index)
+        }
+    }
+
     fun addPost(post: Post) {
         posts.add(post)
         notifyItemInserted(posts.size)

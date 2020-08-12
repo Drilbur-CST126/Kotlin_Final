@@ -84,10 +84,11 @@ class ProfileFragment : Fragment() {
             }
 
             override fun onDataChange(snapshot: DataSnapshot) {
-                adapter.clear()
+                var index = 0
                 snapshot.children.forEach {
                     if (it.child("author").value == user.profileName) {
-                        adapter.addPost(Post.fromSnapshot(it))
+                        adapter.setPost(Post.fromSnapshot(it), index)
+                        index += 1
                     }
                 }
             }

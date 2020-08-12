@@ -42,9 +42,10 @@ class HomeFragment : Fragment() {
             }
 
             override fun onDataChange(snapshot: DataSnapshot) {
-                adapter.clear()
+                var index = 0
                 snapshot.children.forEach {
-                    adapter.addPost(Post.fromSnapshot(it))
+                    adapter.setPost(Post.fromSnapshot(it), index)
+                    index += 1
                 }
             }
         })
