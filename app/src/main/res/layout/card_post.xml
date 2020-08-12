@@ -15,8 +15,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:text="@string/txt_placeholder"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textStyle="italic"
+            android:textAllCaps="false"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -1,6 +1,7 @@
 package com.jnich.kotlinfinal.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.jnich.kotlinfinal.R
 import com.jnich.kotlinfinal.controller.Controller
 import com.jnich.kotlinfinal.model.Post
+import com.jnich.kotlinfinal.ui.profile.ProfileActivity
 
 class PostAdapter(private val context: Context, private val posts: MutableList<Post>) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
     private val db = FirebaseDatabase.getInstance().reference
@@ -70,6 +72,12 @@ class PostAdapter(private val context: Context, private val posts: MutableList<P
                 .child("likes")
                 .setValue(post.likes)
             holder.likeCount.text = post.likes.toString()
+        }
+
+        holder.authorName.setOnClickListener {
+            val intent = Intent(context, ProfileActivity::class.java)
+            intent.putExtra("username", post.author)
+            context.startActivity(intent)
         }
     }
 
