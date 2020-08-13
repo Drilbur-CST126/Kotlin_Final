@@ -2,11 +2,9 @@ package com.jnich.kotlinfinal.ui.profile
 
 import android.Manifest
 import android.app.Activity.RESULT_OK
-import android.app.AlertDialog
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.content.pm.PackageManager.PERMISSION_DENIED
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
@@ -14,22 +12,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
 import com.jnich.kotlinfinal.R
 import com.jnich.kotlinfinal.adapter.PostAdapter
 import com.jnich.kotlinfinal.controller.Controller
 import com.jnich.kotlinfinal.model.Post
 import com.jnich.kotlinfinal.model.User
 import kotlinx.android.synthetic.main.fragment_profile.*
-import java.security.Permission
+import java.io.ByteArrayOutputStream
+import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -45,6 +43,7 @@ class ProfileFragment : Fragment() {
     private var username: String? = null
     private lateinit var user: User
     private val db = FirebaseDatabase.getInstance().reference
+    private val storage = FirebaseStorage.getInstance().reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -170,6 +169,15 @@ class ProfileFragment : Fragment() {
                 }
             }
         }
+
+        if (user.iconUuid != null) {
+            val fileRef = storage.child("images").child(user.iconUuid!!)
+            val tempFile = File.createTempFile("images", "jpg")
+            fileRef.getFile(tempFile).addOnSuccessListener {
+                val image = BitmapFactory.decodeFile(tempFile.absolutePath)
+                img_icon.setImageBitmap(image)
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -180,6 +188,19 @@ class ProfileFragment : Fragment() {
                     val imageStream = requireContext().contentResolver.openInputStream(uri)
                     val image = BitmapFactory.decodeStream(imageStream)
                     img_icon.setImageBitmap(image)
+
+                    val baos = ByteArrayOutputStream()
+                    image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                    val jpgData = baos.toByteArray()
+
+                    val id = "${UUID.randomUUID().toString()}.jpg"
+                    storage.child("images").child(id).putBytes(jpgData)
+                        .addOnFailureListener {
+                            Log.d("ProfileFragment", "Failed to upload image: ${it.message}")
+                        }
+                    Controller.user?.iconUuid = id
+                    db.child("Users").child(Controller.user!!.authUid).child("icon").setValue(id)
+                    imageStream?.close()
                 }
             }
         }

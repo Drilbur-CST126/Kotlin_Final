@@ -54,4 +54,7 @@ dependencies {
 
     // Firebase Auth
     implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
+
+    // Firebase storage
+    implementation 'com.google.firebase:firebase-storage:19.1.1'
 }
