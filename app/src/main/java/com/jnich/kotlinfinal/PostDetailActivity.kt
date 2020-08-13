@@ -13,6 +13,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
 import com.jnich.kotlinfinal.adapter.PostAdapter
 import com.jnich.kotlinfinal.model.Post
 import kotlinx.android.synthetic.main.activity_post_detail.*
@@ -21,6 +22,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 class PostDetailActivity : AppCompatActivity() {
     private lateinit var holder: PostAdapter.ViewHolder
     private val db = FirebaseDatabase.getInstance().reference
+    private val storage = FirebaseStorage.getInstance().reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +32,7 @@ class PostDetailActivity : AppCompatActivity() {
         val postCard = LayoutInflater.from(this)
             .inflate(R.layout.card_post, layout_postDetail, false)
         holder = PostAdapter.ViewHolder(postCard)
-        holder.bind(this, post, db, true)
+        holder.bind(this, post, db, storage, true)
         layout_postDetail.addView(postCard)
 
         val repliesText = TextView(this)

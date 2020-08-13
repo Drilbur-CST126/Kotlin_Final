@@ -2,6 +2,7 @@ package com.jnich.kotlinfinal.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,14 +11,19 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.jnich.kotlinfinal.PostDetailActivity
 import com.jnich.kotlinfinal.R
 import com.jnich.kotlinfinal.controller.Controller
 import com.jnich.kotlinfinal.model.Post
 import com.jnich.kotlinfinal.ui.profile.ProfileActivity
+import kotlinx.android.synthetic.main.fragment_profile.*
+import java.io.File
 
 class PostAdapter(private val context: Context, private val posts: MutableList<Post>) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
     private val db = FirebaseDatabase.getInstance().reference
+    private val storage = FirebaseStorage.getInstance().reference
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val authorName = view.findViewById<TextView>(R.id.txt_postAuthorName)!!
@@ -26,12 +32,13 @@ class PostAdapter(private val context: Context, private val posts: MutableList<P
         val heart = view.findViewById<ToggleButton>(R.id.tgl_heart)!!
         val layout = view.findViewById<ConstraintLayout>(R.id.layout_post)!!
         val reply = view.findViewById<Button>(R.id.btn_reply)!!
+        val image = view.findViewById<ImageView>(R.id.img_post)!!
         var id = ""
 
         val liked: Boolean
             get() = Controller.user?.likes?.contains(id) ?: false
         
-        fun bind(context: Context, post: Post, db: DatabaseReference, focus: Boolean = false) {
+        fun bind(context: Context, post: Post, db: DatabaseReference, storage: StorageReference, focus: Boolean = false) {
             authorName.text = post.author
             content.text = post.content
             likeCount.text = post.likes.toString()
@@ -78,6 +85,17 @@ class PostAdapter(private val context: Context, private val posts: MutableList<P
                 intent.putExtra("username", post.author)
                 context.startActivity(intent)
             }
+
+            if (post.imageUuid != null) {
+                val fileRef = storage.child("images").child(post.imageUuid!!)
+                val tempFile = File.createTempFile("images", "jpg")
+                fileRef.getFile(tempFile).addOnSuccessListener {
+                    val imageBmp = BitmapFactory.decodeFile(tempFile.absolutePath)
+                    image.setImageBitmap(imageBmp)
+                }
+            } else {
+                image.visibility = View.GONE
+            }
         }
     }
 
@@ -93,7 +111,7 @@ class PostAdapter(private val context: Context, private val posts: MutableList<P
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val post = posts[position]
-        holder.bind(context, post, db)
+        holder.bind(context, post, db, storage)
 
         holder.layout.setOnClickListener {
             val intent = Intent(context, PostDetailActivity::class.java)
