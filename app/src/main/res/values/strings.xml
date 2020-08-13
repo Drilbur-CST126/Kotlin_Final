@@ -14,7 +14,6 @@
     <string name="btn_unfollow">Unfollow</string>
 
     <string name="txt_ageError">ERROR: You must be at least 13 years old to create an account.</string>
-    <string name="txt_passwordError">ERROR: Passwords do not match.</string>
     <string name="txt_filloutError">ERROR: Not all fields have been filled out.</string>
 
     <string name="txt_emailPrompt">Email</string>
@@ -22,7 +21,6 @@
     <string name="txt_passwordPrompt">Password</string>
     <string name="txt_passwordRetypePrompt">Retype Password</string>
     <string name="txt_dobPrompt">Date of birth:</string>
-    <string name="txt_genderPrompt">Gender</string>
     <string name="txt_submit">Submit</string>
 
     <string name="title_activity_main">MainActivity</string>
@@ -37,9 +35,4 @@
     <string name="btn_reply">Reply</string>
     <string name="txt_replies">Replies:</string>
 
-    <string name="alert_filePermissions">In order to continue with this action, we need the ability to read your files. Continue?</string>
-    <string name="alert_yes">Yes</string>
-    <string name="alert_no">No</string>
-
-    <string name="img_heart">Like</string>
 </resources>

@@ -1,11 +1,10 @@
 package com.jnich.kotlinfinal
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +16,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.jnich.kotlinfinal.adapter.PostAdapter
 import com.jnich.kotlinfinal.model.Post
 import kotlinx.android.synthetic.main.activity_post_detail.*
-import kotlinx.android.synthetic.main.fragment_home.*
 
 class PostDetailActivity : AppCompatActivity() {
     private lateinit var holder: PostAdapter.ViewHolder

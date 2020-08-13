@@ -193,7 +193,7 @@ class ProfileFragment : Fragment() {
                     image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
                     val jpgData = baos.toByteArray()
 
-                    val id = "${UUID.randomUUID().toString()}.jpg"
+                    val id = "${UUID.randomUUID()}.jpg"
                     storage.child("images").child(id).putBytes(jpgData)
                         .addOnFailureListener {
                             Log.d("ProfileFragment", "Failed to upload image: ${it.message}")

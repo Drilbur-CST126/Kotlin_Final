@@ -15,11 +15,10 @@ import com.jnich.kotlinfinal.R
 import com.jnich.kotlinfinal.adapter.PostAdapter
 import com.jnich.kotlinfinal.controller.Controller
 import com.jnich.kotlinfinal.model.Post
-import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_likes.*
 
 class LikesFragment : Fragment() {
-    val db = FirebaseDatabase.getInstance().reference
+    private val db = FirebaseDatabase.getInstance().reference
 
     override fun onCreateView(
         inflater: LayoutInflater,

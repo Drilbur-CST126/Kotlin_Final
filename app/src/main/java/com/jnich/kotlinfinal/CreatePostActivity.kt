@@ -6,20 +6,18 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.navigation.Navigation
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.jnich.kotlinfinal.controller.Controller
 import com.jnich.kotlinfinal.ui.profile.ProfileFragment
 import kotlinx.android.synthetic.main.activity_create_post.*
-import kotlinx.android.synthetic.main.fragment_profile.*
 import java.io.ByteArrayOutputStream
 import java.util.*
 
@@ -104,7 +102,7 @@ class CreatePostActivity : AppCompatActivity() {
                     image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
                     val jpgData = baos.toByteArray()
 
-                    imageId = "${UUID.randomUUID().toString()}.jpg"
+                    imageId = "${UUID.randomUUID()}.jpg"
                     imageData = jpgData
                     imageStream?.close()
                 }

@@ -2,22 +2,22 @@ package com.jnich.kotlinfinal.ui.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.jnich.kotlinfinal.CreatePostActivity
 import com.jnich.kotlinfinal.R
 import com.jnich.kotlinfinal.adapter.PostAdapter
 import com.jnich.kotlinfinal.controller.Controller
 import com.jnich.kotlinfinal.model.Post
-import com.jnich.kotlinfinal.model.User
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment() {
     private val db = FirebaseDatabase.getInstance().reference

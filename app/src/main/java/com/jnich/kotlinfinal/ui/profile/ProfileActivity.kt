@@ -1,8 +1,7 @@
 package com.jnich.kotlinfinal.ui.profile
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.FragmentTransaction
+import androidx.appcompat.app.AppCompatActivity
 import com.jnich.kotlinfinal.R
 import com.jnich.kotlinfinal.model.User
 

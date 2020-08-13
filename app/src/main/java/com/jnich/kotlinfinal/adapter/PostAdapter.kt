@@ -6,7 +6,10 @@ import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.ToggleButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DatabaseReference
@@ -18,7 +21,6 @@ import com.jnich.kotlinfinal.R
 import com.jnich.kotlinfinal.controller.Controller
 import com.jnich.kotlinfinal.model.Post
 import com.jnich.kotlinfinal.ui.profile.ProfileActivity
-import kotlinx.android.synthetic.main.fragment_profile.*
 import java.io.File
 
 class PostAdapter(private val context: Context, private val posts: MutableList<Post>) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
@@ -26,16 +28,16 @@ class PostAdapter(private val context: Context, private val posts: MutableList<P
     private val storage = FirebaseStorage.getInstance().reference
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val authorName = view.findViewById<TextView>(R.id.txt_postAuthorName)!!
+        private val authorName = view.findViewById<TextView>(R.id.txt_postAuthorName)!!
         val content = view.findViewById<TextView>(R.id.txt_postContent)!!
-        val likeCount = view.findViewById<TextView>(R.id.txt_postLikeCount)!!
-        val heart = view.findViewById<ToggleButton>(R.id.tgl_heart)!!
+        private val likeCount = view.findViewById<TextView>(R.id.txt_postLikeCount)!!
+        private val heart = view.findViewById<ToggleButton>(R.id.tgl_heart)!!
         val layout = view.findViewById<ConstraintLayout>(R.id.layout_post)!!
         val reply = view.findViewById<Button>(R.id.btn_reply)!!
-        val image = view.findViewById<ImageView>(R.id.img_post)!!
+        private val image = view.findViewById<ImageView>(R.id.img_post)!!
         var id = ""
 
-        val liked: Boolean
+        private val liked: Boolean
             get() = Controller.user?.likes?.contains(id) ?: false
         
         fun bind(context: Context, post: Post, db: DatabaseReference, storage: StorageReference, focus: Boolean = false) {

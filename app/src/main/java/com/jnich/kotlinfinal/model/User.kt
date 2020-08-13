@@ -2,7 +2,6 @@ package com.jnich.kotlinfinal.model
 
 import com.google.firebase.database.DataSnapshot
 import java.io.Serializable
-import java.sql.Timestamp
 import java.util.*
 
 data class User (
