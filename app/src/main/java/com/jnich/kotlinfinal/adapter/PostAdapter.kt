@@ -28,16 +28,16 @@ class PostAdapter(private val context: Context, private val posts: MutableList<P
     private val storage = FirebaseStorage.getInstance().reference
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val authorName = view.findViewById<TextView>(R.id.txt_postAuthorName)!!
+        val authorName = view.findViewById<TextView>(R.id.txt_postAuthorName)!!
         val content = view.findViewById<TextView>(R.id.txt_postContent)!!
-        private val likeCount = view.findViewById<TextView>(R.id.txt_postLikeCount)!!
-        private val heart = view.findViewById<ToggleButton>(R.id.tgl_heart)!!
+        val likeCount = view.findViewById<TextView>(R.id.txt_postLikeCount)!!
+        val heart = view.findViewById<ToggleButton>(R.id.tgl_heart)!!
         val layout = view.findViewById<ConstraintLayout>(R.id.layout_post)!!
         val reply = view.findViewById<Button>(R.id.btn_reply)!!
-        private val image = view.findViewById<ImageView>(R.id.img_post)!!
+        val image = view.findViewById<ImageView>(R.id.img_post)!!
         var id = ""
 
-        private val liked: Boolean
+        val liked: Boolean
             get() = Controller.user?.likes?.contains(id) ?: false
         
         fun bind(context: Context, post: Post, db: DatabaseReference, storage: StorageReference, focus: Boolean = false) {
