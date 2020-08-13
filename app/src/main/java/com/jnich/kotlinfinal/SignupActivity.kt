@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.ArraySet
 import android.util.Log
 import android.view.View
 import android.widget.DatePicker
@@ -93,7 +94,8 @@ class SignupActivity: AppCompatActivity() {
                         Controller.user = User(
                             authUid = userId,
                             profileName = username,
-                            birthDate = date ?: User.ERROR_USER.birthDate
+                            birthDate = date ?: User.ERROR_USER.birthDate,
+                            likes = ArraySet()
                         )
 
                         Toast.makeText(this, "Account $username created!", Toast.LENGTH_SHORT)
